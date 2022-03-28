@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-exporter
+  labels:
+    app.kubernetes.io/component: exporter
+    app.kubernetes.io/name: postgres-exporter
+    app.kubernetes.io/part-of: kube-prometheus 
+    app.kubernetes.io/version: 0.8.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+     app.kubernetes.io/component: exporter
+     app.kubernetes.io/name: postgres-exporter
+     app.kubernetes.io/part-of: kube-prometheus
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: exporter
+        app.kubernetes.io/name: postgres-exporter
+        app.kubernetes.io/part-of: kube-prometheus 
+      annotations:
+        checksum/config: config.yml
+    spec:
+      serviceAccountName: 
+      containers:
+        - name: postgres-exporter
+          env:
+          - name: DATA_SOURCE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.config.datasourceSecret.name }}
+                key: {{ .Values.config.datasourceSecret.key }}
+          - name: DATA_SOURCE_URI
+            value: 
+          - name: DATA_SOURCE_USER
+            value: postgres
+          - name: DATA_SOURCE_PASS
+            valueFrom:
+              secretKeyRef:
+                name:
+                key: 
+          image: wrouesnel/postgres_exporter
+          imagePullPolicy: IfNotPresent 
+          ports:
+            - name: http
+              containerPort: 9187
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+               limits:
+                 cpu: 100m
+                  memory: 128Mi
+               requests:
+                 cpu: 100m
+                 memory: 128Mi
+      securityContext:
+            runAsUser: 65534
+      nodeSelector:      
+      volumes:
+      - configMap:
+          name: prometheus-exporter-configuration
+        name: config
