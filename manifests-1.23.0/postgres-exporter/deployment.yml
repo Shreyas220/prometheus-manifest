@@ -30,8 +30,8 @@ spec:
           - name: DATA_SOURCE_NAME
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.config.datasourceSecret.name }}
-                key: {{ .Values.config.datasourceSecret.key }}
+                name:
+                key: 
           - name: DATA_SOURCE_URI
             value: 
           - name: DATA_SOURCE_USER
