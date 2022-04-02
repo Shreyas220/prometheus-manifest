@@ -27,20 +27,18 @@ spec:
       containers:
         - name: postgres-exporter
           env:
-          - name: DATA_SOURCE_NAME
+          - name: postgres-exporter
             valueFrom:
               secretKeyRef:
-                name:
-                key: 
-          - name: DATA_SOURCE_URI
+                name: admin 
+                key: test123
+          - name: postgresdb
             value: 
-          - name: DATA_SOURCE_USER
-            value: postgres
-          - name: DATA_SOURCE_PASS
+          - name: test123
             valueFrom:
               secretKeyRef:
-                name:
-                key: 
+                name: admin
+                key: test123
           image: wrouesnel/postgres_exporter
           imagePullPolicy: IfNotPresent 
           ports:
@@ -55,13 +53,6 @@ spec:
             httpGet:
               path: /
               port: http
-          resources:
-               limits:
-                 cpu: 100m
-                  memory: 128Mi
-               requests:
-                 cpu: 100m
-                 memory: 128Mi
       securityContext:
             runAsUser: 65534
       nodeSelector:      

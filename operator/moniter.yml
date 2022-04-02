@@ -6,8 +6,10 @@ metadata:
     k8s-app: prometheus
     monitoring.appscode.com/service: coreos-prom-postgres-stats.demo
   name: kubedb-demo-coreos-prom-postgres
+  namespace: monitoring
   resourceVersion: "53969"
   selfLink: /apis/monitoring.coreos.com/v1/namespaces/monitoring/servicemonitors/kubedb-demo-coreos-prom-postgres
+  uid: d3c419ad-0f6e-11e9-b230-080027f306f3
 spec:
   endpoints:
   - honorLabels: true
