@@ -27,19 +27,12 @@ spec:
       containers:
         - name: postgres-exporter
           env:
-          - name: postgres-exporter
-            valueFrom:
-              secretKeyRef:
-                name: admin 
-                key: test123
           - name: postgresdb
-            value: 
-          - name: test123
             valueFrom:
               secretKeyRef:
                 name: admin
-                key: test123
-          image: wrouesnel/postgres_exporter
+                key: data_source_password
+          image: prometheuscommunity/postgres-exporter
           imagePullPolicy: IfNotPresent 
           ports:
             - name: http
